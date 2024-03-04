@@ -7,9 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,11 +17,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 
@@ -42,6 +36,12 @@ public class Main extends Application {
 			dateLabel.setLabelFor(dateTimeField);
 			dateTimeField = new TextField();		//Field for Date and Time
 			
+			//Create random
+			Random random = new Random();
+			
+			//Generate random number for hue. Green is between 81 and 140. 140 - 81 = 59 so that is the range for our hue value
+			int hue = random.nextInt(59);
+			
 			//Set title of stage
 			primaryStage.setTitle("Module 3");
 			
@@ -52,7 +52,7 @@ public class Main extends Application {
 			Menu menu = new Menu("Menu");
 			MenuItem dateTime = new MenuItem("Date & Time");
 			MenuItem saveText = new MenuItem("Save Text to Log");
-			MenuItem randomGreen = new MenuItem("Change Background Color");
+			MenuItem randomGreen = new MenuItem("Change Background Color to Green");
 			MenuItem exit = new MenuItem("Exit");
 			
 			//Add menu items to menu
@@ -64,7 +64,7 @@ public class Main extends Application {
 			//Add ActionEvent handling to menu items FIXME create methods for actions
 			dateTime.setOnAction(e -> printDateTime());
 			saveText.setOnAction(e -> writeToFile());
-			randomGreen.setOnAction(e -> changeBackgroundColor(root));
+			randomGreen.setOnAction(e -> changeBackgroundColor(root, hue));
 			exit.setOnAction(e -> primaryStage.close());
 			
 			//Configure text area
@@ -118,16 +118,11 @@ public class Main extends Application {
 	}
 	
 	//Method for changing background color
-	private void changeBackgroundColor(GridPane root) {
-		//Create random
-		Random random = new Random();
-		
-		//Generate random number for hue. Green is between 81 and 140. 140 - 81 = 59 so that is the range for our hue value
-		int hue = random.nextInt(59);
-		
+	private void changeBackgroundColor(GridPane root, int hue) {
 		//Create color object with hue + 81.0 to encompass all hue degrees for green
 		Color color = Color.hsb(hue + 81.0, 1.0, 0.50);
 		
+		//Set style of GridPane to change color
 		root.setStyle("-fx-background-color: " + color.toString().replace("0x", "#") + ";");
 	}
 
